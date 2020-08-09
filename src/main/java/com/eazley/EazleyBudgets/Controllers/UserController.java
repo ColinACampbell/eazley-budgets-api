@@ -51,6 +51,7 @@ public class UserController {
         }
     }
 
+    // TODO Refractor this
     @PostMapping("/login")
     public Map<String,String> login(HttpSession httpSession, @RequestBody Map<String,Object> payload)
     {
@@ -71,5 +72,14 @@ public class UserController {
             responseBody.put("status","pass");
             return responseBody;
         }
+    }
+
+    @GetMapping("/info")
+    @ResponseBody
+    public User getUserInfo(HttpSession session)
+    {
+        // User object is stored in the session
+        User user = (User) session.getAttribute("user");
+        return user;
     }
 }
