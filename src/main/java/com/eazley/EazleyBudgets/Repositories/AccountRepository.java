@@ -12,4 +12,5 @@ public interface AccountRepository extends CrudRepository<Account,Integer> {
     List<Account> findByUser(User user);
     Account findById(int id);
     long deleteById(int id);
+    void deleteByUser(User user);
 }

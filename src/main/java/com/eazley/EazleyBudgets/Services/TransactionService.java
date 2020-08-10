@@ -7,6 +7,7 @@ import com.eazley.EazleyBudgets.Repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -72,11 +73,10 @@ public class TransactionService {
         return transactionRepository.findByAccount(account);
     }
 
-    public long deleteTransactions(int accountID)
+    @Transactional
+    public void deleteTransactions(int accountID)
     {
         Account account = accountService.getAccount(accountID);
-        return transactionRepository.deleteByAccount(account);
+        transactionRepository.deleteByAccount(account);
     }
-
-
 }

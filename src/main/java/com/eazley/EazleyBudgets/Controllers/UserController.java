@@ -1,6 +1,9 @@
 package com.eazley.EazleyBudgets.Controllers;
 
+import com.eazley.EazleyBudgets.Models.Account;
 import com.eazley.EazleyBudgets.Models.User;
+import com.eazley.EazleyBudgets.Services.AccountService;
+import com.eazley.EazleyBudgets.Services.TransactionService;
 import com.eazley.EazleyBudgets.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -16,6 +20,10 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private AccountService accountService;
+    @Autowired
+    private TransactionService transactionService;
 
     // TODO : Work on this end point
     @PostMapping("/sign-up")
@@ -81,5 +89,28 @@ public class UserController {
         // User object is stored in the session
         User user = (User) session.getAttribute("user");
         return user;
+    }
+
+    @DeleteMapping("/delete-profile")
+    public ResponseEntity deleteUser(HttpSession session)
+    {
+
+        User user = (User) session.getAttribute("user");
+
+        System.out.println(user);
+
+        List<Account> accounts = accountService.getAccounts(user);
+
+        System.out.println(accounts);
+
+        for (Account account : accounts)
+        {
+            transactionService.deleteTransactions(account.getId());
+        }
+
+        accountService.deleteAccounts(user);
+        userService.deleteUser(user);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
