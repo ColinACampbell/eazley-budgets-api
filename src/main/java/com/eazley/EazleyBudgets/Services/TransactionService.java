@@ -78,5 +78,6 @@ public class TransactionService {
     {
         Account account = accountService.getAccount(accountID);
         transactionRepository.deleteByAccount(account);
+
     }
 }

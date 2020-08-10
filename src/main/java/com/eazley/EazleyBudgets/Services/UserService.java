@@ -3,6 +3,7 @@ package com.eazley.EazleyBudgets.Services;
 import com.eazley.EazleyBudgets.Models.User;
 import com.eazley.EazleyBudgets.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -41,6 +42,7 @@ public class UserService {
         userRepository.save(user);
     }
 
+    // TODO : Find a work around for proper hashing
     public User getUser(String email,String password)
     {
         return userRepository.findByEmailAndPassword(email,password);
