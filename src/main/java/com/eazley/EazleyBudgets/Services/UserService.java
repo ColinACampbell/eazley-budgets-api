@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -25,27 +27,16 @@ public class UserService {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setEmail(email);
-        user.setPassword(password);
+        user.setPassword(hashPassword(password));
         user.setDateJoined(dateFormat.format(date));
 
         return userRepository.save(user);
     }
 
-
-    public void createDemoUser()
-    {
-        User user = new User();
-        user.setEmail("prontobol@gmail.com");
-        user.setPassword("mypassword");
-        user.setFirstName("Colin");
-        user.setLastName("Campbell");
-        userRepository.save(user);
-    }
-
     // TODO : Find a work around for proper hashing
     public User getUser(String email,String password)
     {
-        return userRepository.findByEmailAndPassword(email,password);
+        return userRepository.findByEmailAndPassword(email,hashPassword(password));
     }
 
     public User getUser(String email)
@@ -58,5 +49,18 @@ public class UserService {
         userRepository.deleteById(user.getId());
     }
 
+    public String hashPassword(String password)
+    {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(password.getBytes());
+            return new String(messageDigest.digest());
+        } catch (NoSuchAlgorithmException e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
 }

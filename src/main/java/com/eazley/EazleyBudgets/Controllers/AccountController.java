@@ -18,8 +18,6 @@ public class AccountController {
 
     @Autowired
     AccountService accountService;
-    @Value("${client.url}")
-    private String clientUrl;
 
     @PostMapping("/create")
     public ResponseEntity createAccount(HttpSession session, @RequestBody Map<String,Object> payload)
@@ -53,7 +51,6 @@ public class AccountController {
     @GetMapping("/all")
     public List<Account> getAllAccounts(HttpSession session)
     {
-        System.out.println(clientUrl);
         User user = (User) session.getAttribute("user");
 
         if (user == null)
