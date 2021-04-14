@@ -1,6 +1,6 @@
 # Eazley-Budgets-API
 
-Back end code to my project [Eazley Bugdets](https://eazley-budgets-client.herokuapp.com/)
+Back end code to my project [Eazley Budgets](https://eazley-budgets-client.herokuapp.com/)
 
 ## Note
 
